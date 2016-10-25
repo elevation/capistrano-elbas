@@ -33,6 +33,10 @@ set :aws_autoscale_instance_size, 'm1.small'
 
 set :aws_launch_configuration_detailed_instance_monitoring, true
 set :aws_launch_configuration_associate_public_ip, true
+
+set :aws_iam_instance_profile, 'profile_name'
+set :aws_key_pair,             'key_name'
+set :aws_base_instance_name,   'server_123'
 ```
 
 ## Usage
@@ -56,5 +60,12 @@ deployment:
 "ELBAS: Created Launch Configuration: elbas-lc-ENVIRONMENT-UNIX_TIMESTAMP"
 "ELBAS: Attaching Launch Configuration to AutoScale Group"
 "ELBAS: Deleting old launch configuration: elbas-lc-production-123456"
-"ELBAS: Deleting old image: ami-999999"
+"ELBAS: Deleting old AMI: ami-999999"
+"ELBAS: Deleting snapshot: snap-123456"
+```
+
+To run just the rake task, which is called after the deployment above:
+
+```
+cap production elbas:scale
 ```

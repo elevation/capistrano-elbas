@@ -17,7 +17,13 @@ module Elbas
 
     private
       def base_ec2_instance
-        @_base_ec2_instance ||= autoscale_group.ec2_instances.filter('instance-state-name', 'running').first
+        @_base_ec2_instance ||=
+          if base_instance_name = fetch(:aws_base_instance_name, nil)
+            # specify which instance to create the AMI from
+            autoscale_group.ec2_instances.filter('tag:Name', base_instance_name).first
+          else
+            autoscale_group.ec2_instances.filter('instance-state-name', 'running').first
+          end
       end
 
       def environment
